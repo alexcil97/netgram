@@ -1,5 +1,6 @@
 "use server"
 
+import { generateVerificationToken } from "@/data/token"
 import { getUserByEmail } from "@/data/user"
 import { LoginValidator } from "@/validations"
 import bcrypt from "bcryptjs"
@@ -12,7 +13,7 @@ export const login = async (values: z.infer<typeof LoginValidator>, callbackUrl?
     if (!validationsFields.success) {
         return { error: "Revisa los campos" }
     }
-    const { email, password } = validationsFields.data
+    const { email, password, code } = validationsFields.data
 
     const existeUsuario = await getUserByEmail(email)
 
@@ -31,8 +32,12 @@ export const login = async (values: z.infer<typeof LoginValidator>, callbackUrl?
     }
 
     if (!existeUsuario.emailVerified) {
+        const verificationToken = await generateVerificationToken(existeUsuario.email)
 
+        //recuerda hacer el sendverification
     }
+
+
 
 
 }

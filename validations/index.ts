@@ -10,7 +10,9 @@ export const LoginValidator = z.object({
     //validacion de la password, pedira 5 o mas caracteres y de no ser asi mandara un error(login).
     password: z.string().min(5, {
         message: "la password debe tener mas de 5 caracteres o letras",
-    })
+    }),
+
+    code: z.optional(z.string())
 
 })
 
