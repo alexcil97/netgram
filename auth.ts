@@ -60,7 +60,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update,
             }
 
             if (session.user) {
-                session.user.name = token.name as string
+                session.user.nombre = token.nombre as string
                 session.user.email = token.email as string
 
             }
@@ -79,6 +79,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update,
             const existingAccount = await getAccountByUserId(existingUser.id)
 
             token.isOAuth = !!existingAccount
+            token.nombre = existingUser.nombre
             token.email = existingUser.email
             token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled
 

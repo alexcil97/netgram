@@ -11,6 +11,7 @@ export const getVerificactionByToken = async (token: string) => {
         return null
     }
 }
+
 export const getVerificactionTokenByEmail = async (email: string) => {
     try {
         const verificacionToken = await db.verificationToken.findFirst({

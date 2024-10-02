@@ -9,6 +9,8 @@ import { useState, useTransition } from "react"
 import { Input } from "@nextui-org/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { login } from "@/actions/login"
+import { useSearchParams } from "next/navigation"
 
 export const LoginForm = () => {
 
@@ -16,7 +18,9 @@ export const LoginForm = () => {
 
     const[error, setError] = useState<string | undefined>("")
     const[sucess, setSucess] = useState<string | undefined>("")
-
+    const searchParams = useSearchParams()
+    const callbackUrl = searchParams.get("callbackUrl")
+    
     //usa usetransition que es un hook de next, para mejorar la experiencia de usuario y mantener la fluidez
     const [isPending, startTransition] = useTransition()
 
@@ -35,7 +39,22 @@ export const LoginForm = () => {
         setSucess("")
 
         startTransition(() => {
-            console.log("ENVIANDO DATOS", values)
+            console.log("VERIFICANDO DATOS", values);
+            
+            login(values, callbackUrl)
+                .then((data)=> {
+                    if(data?.error) {
+                        form.reset()
+                        setError(data?.error)
+                    }
+                    if(data?.sucess) {
+                        console.log("HECHO")
+                        form.reset()
+                        setSucess(data?.sucess)
+                    }
+
+                })
+                .catch(() => setError("Algo ha ido mal."))
 
         })
     }
