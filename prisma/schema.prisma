@@ -21,7 +21,9 @@ model User {
     isTwoFactorEnabled    Boolean                @default(false)
     accounts              Account[]
     twoFactorConfirmation TwoFactorConfirmation?
+    publications          Publication[]
 }
+
 
 model Account {
     id                String  @id @default(cuid())
@@ -39,6 +41,17 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+}
+model Publication {
+    id                  String   @id @default(cuid())
+    id_user             String
+    publication_date    DateTime @default(now())
+    url_image           String?
+    publication_message String
+
+    user                User     @relation(fields: [id_user], references: [id], onDelete: Cascade)
+
+    @@index([id_user])
 }
 
 model VerificationToken {
@@ -78,3 +91,4 @@ enum UserRole {
     ADMIN
     USER
 }
+
